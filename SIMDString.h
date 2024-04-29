@@ -55,9 +55,9 @@ SOFTWARE.
 #endif
 
 #ifdef G3D_System_h
-#define TEMPLATE template<size_t INTERNAL_SIZE = 64, class Allocator = G3D::g3d_allocator<char>>
+#define TEMPLATE template<typename CharType = char, size_t INTERNAL_SIZE = 64, class Allocator = G3D::g3d_allocator<CharType>>
 #else
-#define TEMPLATE template<size_t INTERNAL_SIZE = 64, class Allocator = ::std::allocator<char>>
+#define TEMPLATE template<typename CharType = char, size_t INTERNAL_SIZE = 64, class Allocator = ::std::allocator<CharType>>
 #endif
 
 bool inConstSegment(const char* c);
@@ -82,7 +82,7 @@ alignas(SSO_ALIGNMENT)
 SIMDString {
 public:
 
-    typedef char                                    value_type;
+    typedef CharType                                    value_type;
     typedef std::char_traits<value_type>            traits_type;
     typedef value_type&                             reference;
     typedef const value_type&                       const_reference;
