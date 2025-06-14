@@ -26,13 +26,13 @@ SOFTWARE.
 #include <SIMDString.h>
 #include <string>
 
-char sampleString[44] = "the quick brown fox jumps over the lazy dog";
-size_t sampleStringSize = strlen(sampleString);
-char sampleStringLarge [446] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-size_t sampleStringLargeSize = strlen(sampleStringLarge);
-const char* findTestString = "abcabcabcabcabcabcabcdabcabcABCabc";
-const char* findTestString2 = "abcabcabcabcabcabcabcdabcabcabcabcadsf";
-const char* findTestString3 = "abcabcabcabcabcabcabcabcabcABCabc";
+static char sampleString[44] = "the quick brown fox jumps over the lazy dog";
+static size_t sampleStringSize = strlen(sampleString);
+static char sampleStringLarge [446] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+static size_t sampleStringLargeSize = strlen(sampleStringLarge);
+static const char* findTestString = "abcabcabcabcabcabcabcdabcabcABCabc";
+static const char* findTestString2 = "abcabcabcabcabcabcabcdabcabcabcabcadsf";
+static const char* findTestString3 = "abcabcabcabcabcabcabcabcabcABCabc";
 
 TEST(SIMDStringTest, Construct)
 {
@@ -1370,3 +1370,18 @@ TEST(SIMDStringTest, RangeLoops){
 
   EXPECT_STREQ(result1.c_str(), result2.c_str());
 }
+
+
+#if defined(BUILDING_LIBSIMDSTRING_TESTS)
+
+#if defined(BUILD_MONOLITHIC)
+#define main      SIMDString_tests_main
+#endif
+
+extern "C"
+int main(int argc, const char** argv) {
+	testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
+}
+
+#endif

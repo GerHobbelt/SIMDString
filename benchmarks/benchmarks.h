@@ -508,7 +508,7 @@ void RegisterBenchmarks(const char* classname) {
 
     // This macro registers the benchmark and assigns a weight to the benchmark in weights
 #   define REGISTER_BENCHMARK(fun) sprintf(buffer, "%s<%s>", #fun, classname);\
-        benchmark::RegisterBenchmark(buffer, fun<Str>)\
+        benchmark::RegisterBenchmark(BENCHMARK_FAMILY_ID, buffer, fun<Str>)\
 
     REGISTER_BENCHMARK(BM_CtorDefault);
     REGISTER_BENCHMARK(BM_Ctor)->Arg(0)->RangeMultiplier(4)->Range(1, 1024)->Arg(63)->Arg(MAX_STRING_LEN);

@@ -2,6 +2,7 @@
 //#define TEST_FOLLY
 //#define TEST_G3D_ALLOC
 
+#define BENCHMARK_FAMILY_ID  "SIMDString"
 
 #include "SIMDString.h"
 #include "benchmarks.h"
@@ -18,8 +19,12 @@
 #   include <G3D/G3D.h>
 #endif
 
+#if defined(BUILD_MONOLITHIC)
+#define main      SIMDString_benchmark_main
+#endif
 
-int main(int argc, char* argv[]) {
+extern "C"
+int main(int argc, const char** argv) {
     // __VA_ARGS_ is necessary because type templating messes up Macro argument parsing
 #   define REGISTER_CLASS_BENCHMARKS(...) RegisterBenchmarks<__VA_ARGS__>(#__VA_ARGS__)
 
@@ -44,7 +49,7 @@ int main(int argc, char* argv[]) {
     // Run benchmarks
     ::benchmark::Initialize(&argc, argv);
     if (::benchmark::ReportUnrecognizedArguments(argc, argv)) return 1;
-    ::benchmark::RunSpecifiedBenchmarks();
+    ::benchmark::RunSpecifiedBenchmarks(BENCHMARK_FAMILY_ID, false);
     ::benchmark::Shutdown();
 
     return 0;
