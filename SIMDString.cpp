@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include <stdint.h>
 #include <cstdlib>
+#include <SIMDString.h>
 
 #ifdef _WIN32
 #   define OS_WINDOWS
