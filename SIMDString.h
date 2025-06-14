@@ -287,7 +287,7 @@ protected:
         }
     }
 
-    constexpr void free(void* p, size_t oldSize) const {
+    constexpr void release(void* p, size_t oldSize) const {
         m_allocator.deallocate(static_cast<pointer>(p), oldSize);
     }
 
@@ -330,7 +330,7 @@ protected:
                 ::memcpy(newPtr, old, m_length); 
                 m_ptr = newPtr;
             }
-            if (wasInHeap) free(old, oldSize);
+            if (wasInHeap) release(old, oldSize);
             return newPtr; 
         }
         return data();
@@ -360,7 +360,7 @@ protected:
                 ::memcpy(newPtr + pos + count2, old + pos + count, m_length - pos - count + 1);
                 m_ptr = newPtr;
             }
-            if (wasInHeap) { free(old, oldSize); }
+            if (wasInHeap) { release(old, oldSize); }
             return newPtr;
         } else {
             // move [data() + pos + count, data() + m_length) to [data() + pos + count2, data() + newSize)
@@ -373,7 +373,7 @@ protected:
     constexpr inline void maybeDeallocate() {
         if (inHeap()) {
             // Free previously allocated data
-            free(m_ptr, m_allocatedSize);
+            release(m_ptr, m_allocatedSize);
             m_allocatedSize = INTERNAL_SIZE;
         }
     }
@@ -389,7 +389,7 @@ protected:
         // free the old data, if applicable
         if (inHeap()) {
             // Free previously allocated data
-            free(m_ptr, m_allocatedSize);
+            release(m_ptr, m_allocatedSize);
         }
 
         // allocate memory
@@ -653,7 +653,7 @@ public:
     ~SIMDString() {
         if (inHeap()) {
             // Note that this calls the method, not ::free 
-            free(m_ptr, m_allocatedSize);
+            release(m_ptr, m_allocatedSize);
         }
     }
 
@@ -1019,7 +1019,7 @@ public:
                 pointer newPtr = m_allocator.allocate(m_allocatedSize);
                 ::memcpy(newPtr, old, m_length + 1);
                 m_ptr = newPtr; 
-                if (wasInHeap) free(old, oldSize);
+                if (wasInHeap) release(old, oldSize);
             } else if (inConst()) {
                 // copy to the internal buffer.
                 ::memcpy(m_buffer, data(), m_length + 1);
@@ -1043,7 +1043,7 @@ public:
                 m_ptr = m_allocator.allocate(m_allocatedSize); 
                 ::memcpy(m_buffer, old, m_length + 1);
             }
-            free(old, oldSize);
+            release(old, oldSize);
         }
     }
 
