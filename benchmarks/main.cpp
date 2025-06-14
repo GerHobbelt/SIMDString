@@ -30,10 +30,10 @@ int main(int argc, const char** argv) {
 
     // Register benchmarks for each class
     REGISTER_CLASS_BENCHMARKS(std::string);
-    REGISTER_CLASS_BENCHMARKS(SIMDString<64, ::std::allocator<char>>);
+    REGISTER_CLASS_BENCHMARKS(SIMDString<char, 64, ::std::allocator<char>>);
 
 #   ifdef TEST_G3D_ALLOC
-    REGISTER_CLASS_BENCHMARKS(SIMDString<64, G3D::g3d_allocator<char>>); 
+    REGISTER_CLASS_BENCHMARKS(SIMDString<char, 64, G3D::g3d_allocator<char>>); 
 #   endif
 
 #   ifdef TEST_EASTL

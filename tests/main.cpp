@@ -36,20 +36,20 @@ static const char* findTestString3 = "abcabcabcabcabcabcabcabcabcABCabc";
 
 TEST(SIMDStringTest, Construct)
 {
-  SIMDString<64> simdstring0;
-  SIMDString<64> simdstring1('a');
-  SIMDString<64> simdstring2("0123456789abcdefghijklmnopqrstuvwxyz");
-  SIMDString<64> simdstring3(simdstring2, 10);
-  SIMDString<64> simdstring4(simdstring2, 10, 10);
-  SIMDString<64> simdstring5(simdstring2.begin(), simdstring2.begin() + 10);
-  SIMDString<64> simdstring6{SIMDString<64>(sampleString)};
-  SIMDString<64> simdstring7({'a', 'b', 'c'});
+  SIMDString<char, 64> simdstring0;
+  SIMDString<char, 64> simdstring1('a');
+  SIMDString<char, 64> simdstring2("0123456789abcdefghijklmnopqrstuvwxyz");
+  SIMDString<char, 64> simdstring3(simdstring2, 10);
+  SIMDString<char, 64> simdstring4(simdstring2, 10, 10);
+  SIMDString<char, 64> simdstring5(simdstring2.begin(), simdstring2.begin() + 10);
+  SIMDString<char, 64> simdstring6{SIMDString<char, 64>(sampleString)};
+  SIMDString<char, 64> simdstring7({'a', 'b', 'c'});
 
   std::string string1(sampleString);
-  SIMDString<64> simdstring8(string1, 40);
-  SIMDString<64> simdstring9(string1, 4, 5);
-  SIMDString<64> simdstring10(10, 'b');
-  SIMDString<64> simdstring11(simdstring10);
+  SIMDString<char, 64> simdstring8(string1, 40);
+  SIMDString<char, 64> simdstring9(string1, 4, 5);
+  SIMDString<char, 64> simdstring10(10, 'b');
+  SIMDString<char, 64> simdstring11(simdstring10);
 
   EXPECT_EQ(simdstring0.size(), 0);
   EXPECT_STREQ(simdstring0.c_str(), "");
@@ -85,7 +85,7 @@ TEST(SIMDStringTest, Construct)
   EXPECT_STREQ(simdstring10.c_str(), "bbbbbbbbbb");
 
   simdstring10.insert(0, "0123456789");
-  SIMDString<64> simdstring12(simdstring10, 0, 5);
+  SIMDString<char, 64> simdstring12(simdstring10, 0, 5);
 
   EXPECT_EQ(simdstring11.size(), 10);
   EXPECT_STREQ(simdstring11.c_str(), "bbbbbbbbbb");
@@ -93,20 +93,20 @@ TEST(SIMDStringTest, Construct)
   EXPECT_EQ(simdstring12.size(), 5);
   EXPECT_STREQ(simdstring12.c_str(), "01234");
 
-  SIMDString<64> simdstring13 (string1.begin(), string1.end());
+  SIMDString<char, 64> simdstring13 (string1.begin(), string1.end());
   EXPECT_EQ(simdstring13.size(), string1.size());
   EXPECT_STREQ(simdstring13.c_str(), string1.c_str());
   
   std::istringstream ss{sampleStringLarge};
   std::istreambuf_iterator<char> it{ss};
-  SIMDString<64> simdstring14{it, std::istreambuf_iterator<char>()};
+  SIMDString<char, 64> simdstring14{it, std::istreambuf_iterator<char>()};
   EXPECT_STREQ(simdstring14.c_str(), sampleStringLarge);
   EXPECT_EQ(simdstring14.size(), sampleStringLargeSize);
 }
 
 TEST(SIMDStringTest, Assign)
 {
-  SIMDString<64> simdstring0;
+  SIMDString<char, 64> simdstring0;
   EXPECT_EQ(simdstring0.size(), 0);
   EXPECT_STREQ(simdstring0.c_str(), "");
 
@@ -114,9 +114,9 @@ TEST(SIMDStringTest, Assign)
   EXPECT_EQ(simdstring0.size(), 1);
   EXPECT_STREQ(simdstring0.c_str(), "a");
 
-  SIMDString<64> simdstring1(sampleString, 26);
+  SIMDString<char, 64> simdstring1(sampleString, 26);
 
-  SIMDString<64> simdstring2("0123456789abcdefghijklmnopqrstuvwxyz");
+  SIMDString<char, 64> simdstring2("0123456789abcdefghijklmnopqrstuvwxyz");
 
   simdstring0.assign(simdstring2);
   EXPECT_EQ(simdstring0.size(), 36);
@@ -138,7 +138,7 @@ TEST(SIMDStringTest, Assign)
   EXPECT_EQ(simdstring0.size(), 10);
   EXPECT_STREQ(simdstring0.c_str(), "0123456789");
 
-  simdstring0 = SIMDString<64>(sampleString);
+  simdstring0 = SIMDString<char, 64>(sampleString);
   EXPECT_EQ(simdstring0.size(), 43);
   EXPECT_STREQ(simdstring0.c_str(), sampleString);
 
@@ -150,7 +150,7 @@ TEST(SIMDStringTest, Assign)
   EXPECT_EQ(simdstring0.size(), 3);
   EXPECT_STREQ(simdstring0.c_str(), "abc");
 
-  SIMDString<64> simdstring3(100, 'a');
+  SIMDString<char, 64> simdstring3(100, 'a');
   std::string string3(100, 'a');
   simdstring0.assign(simdstring3);
   EXPECT_EQ(simdstring0.size(), string3.size());
@@ -180,7 +180,7 @@ TEST(SIMDStringTest, Assign)
 
 TEST(SIMDStringTest, Access)
 {
-  SIMDString<64> simdstring(sampleString);
+  SIMDString<char, 64> simdstring(sampleString);
 
   EXPECT_EQ(simdstring.at(4), 'q');
   EXPECT_EQ(simdstring[4], 'q');
@@ -195,25 +195,25 @@ TEST(SIMDStringTest, Access)
   const char* constString3 = "aabaa";
   const char* constString4 = "aaaab";
 
-  SIMDString<64> simdstring1(constString1);
+  SIMDString<char, 64> simdstring1(constString1);
   EXPECT_EQ(simdstring1.c_str(), constString1);
   simdstring1.front() = 'a';
   EXPECT_NE(simdstring1.c_str(), constString1);
   EXPECT_STREQ(simdstring1.c_str(), aString);
 
-  SIMDString<64> simdstring2(constString2);
+  SIMDString<char, 64> simdstring2(constString2);
   EXPECT_EQ(simdstring2.c_str(), constString2);
   simdstring2[1] = 'a';
   EXPECT_NE(simdstring2.c_str(), constString2);
   EXPECT_STREQ(simdstring2.c_str(), aString);
 
-  SIMDString<64> simdstring3(constString3);
+  SIMDString<char, 64> simdstring3(constString3);
   EXPECT_EQ(simdstring3.c_str(), constString3);
   simdstring3.at(2) = 'a';
   EXPECT_NE(simdstring3.c_str(), constString3);
   EXPECT_STREQ(simdstring3.c_str(), aString);
 
-  SIMDString<64> simdstring4(constString4);
+  SIMDString<char, 64> simdstring4(constString4);
   EXPECT_EQ(simdstring4.c_str(), constString4);
   simdstring4.back() = 'a';
   EXPECT_NE(simdstring4.c_str(), constString4);
@@ -222,7 +222,7 @@ TEST(SIMDStringTest, Access)
 
 TEST(SIMDStringTest, Iterator)
 {
-  SIMDString<64> simdstring1(sampleString);
+  SIMDString<char, 64> simdstring1(sampleString);
   std::string string1(sampleString);
 
   EXPECT_EQ(*simdstring1.begin(), *string1.begin());
@@ -259,10 +259,10 @@ TEST(SIMDStringTest, Compare)
   std::string string3(6, 'b');
   std::string string4(5, 'a');
 
-  SIMDString<64> simdstring1(5, 'a');
-  SIMDString<64> simdstring2(simdstring1, 1);
-  SIMDString<64> simdstring3(6, 'b');
-  SIMDString<64> simdstring4(5, 'a');
+  SIMDString<char, 64> simdstring1(5, 'a');
+  SIMDString<char, 64> simdstring2(simdstring1, 1);
+  SIMDString<char, 64> simdstring3(6, 'b');
+  SIMDString<char, 64> simdstring4(5, 'a');
 
   // same string
   EXPECT_EQ(string1.compare(string1), simdstring1.compare(simdstring1));
@@ -324,10 +324,10 @@ TEST(SIMDStringTest, Compare)
 
 TEST(SIMDStringTest, Equality)
 {
-  SIMDString<64> simdstring1(5, 'a');
-  SIMDString<64> simdstring2(6, 'a');
-  SIMDString<64> simdstring3(6, 'b');
-  SIMDString<64> simdstring4(5, 'a');
+  SIMDString<char, 64> simdstring1(5, 'a');
+  SIMDString<char, 64> simdstring2(6, 'a');
+  SIMDString<char, 64> simdstring3(6, 'b');
+  SIMDString<char, 64> simdstring4(5, 'a');
   std::string string1(5, 'a');
   std::string string2(6, 'a');
   std::string string3(6, 'b');
@@ -367,8 +367,8 @@ TEST(SIMDStringTest, Append)
   std::string string1(5, 'a');
   std::string string2(6, 'b');
 
-  SIMDString<64> simdstring1(5, 'a');
-  SIMDString<64> simdstring2(6, 'b');
+  SIMDString<char, 64> simdstring1(5, 'a');
+  SIMDString<char, 64> simdstring2(6, 'b');
 
   EXPECT_STREQ((string1 + "abc").c_str(), (simdstring1 + "abc").c_str());
   EXPECT_STREQ((string1 + 'a').c_str(), (simdstring1 + 'a').c_str());
@@ -406,13 +406,13 @@ TEST(SIMDStringTest, Append)
   EXPECT_STREQ(('a' + string1).c_str(), ('a'+ simdstring1).c_str());
 
   // Test rvalue concat
-  EXPECT_STREQ((sampleString + std::string(sampleString)).c_str(), (sampleString + SIMDString<64>(sampleString)).c_str());
-  EXPECT_STREQ(('a' + std::string(sampleString)).c_str(), ('a'+ SIMDString<64>(sampleString)).c_str());
-  EXPECT_STREQ((string1 + std::string(sampleString)).c_str(), (simdstring1 + SIMDString<64>(sampleString)).c_str());
-  EXPECT_STREQ((std::string(sampleString) + string2).c_str(), (SIMDString<64>(sampleString) + simdstring2).c_str());
-  EXPECT_STREQ((std::string(sampleString) + sampleString).c_str(), (SIMDString<64>(sampleString) + sampleString).c_str());
-  EXPECT_STREQ((std::string(sampleString) + 'a').c_str(), (SIMDString<64>(sampleString) + 'a').c_str());
-  EXPECT_STREQ((std::string(sampleString) + std::string(sampleString)).c_str(), (SIMDString<64>(sampleString) + SIMDString<64>(sampleString)).c_str());
+  EXPECT_STREQ((sampleString + std::string(sampleString)).c_str(), (sampleString + SIMDString<char, 64>(sampleString)).c_str());
+  EXPECT_STREQ(('a' + std::string(sampleString)).c_str(), ('a'+ SIMDString<char, 64>(sampleString)).c_str());
+  EXPECT_STREQ((string1 + std::string(sampleString)).c_str(), (simdstring1 + SIMDString<char, 64>(sampleString)).c_str());
+  EXPECT_STREQ((std::string(sampleString) + string2).c_str(), (SIMDString<char, 64>(sampleString) + simdstring2).c_str());
+  EXPECT_STREQ((std::string(sampleString) + sampleString).c_str(), (SIMDString<char, 64>(sampleString) + sampleString).c_str());
+  EXPECT_STREQ((std::string(sampleString) + 'a').c_str(), (SIMDString<char, 64>(sampleString) + 'a').c_str());
+  EXPECT_STREQ((std::string(sampleString) + std::string(sampleString)).c_str(), (SIMDString<char, 64>(sampleString) + SIMDString<char, 64>(sampleString)).c_str());
 
   // append using input iterator
   std::istringstream ss1{sampleString};
@@ -428,7 +428,7 @@ TEST(SIMDStringTest, Append)
 
 TEST(SIMDStringTest, PushPopBack)
 {
-  SIMDString<64> simdstring1(sampleString);
+  SIMDString<char, 64> simdstring1(sampleString);
   std::string string1(sampleString);
 
   string1.push_back('a');
@@ -442,7 +442,7 @@ TEST(SIMDStringTest, PushPopBack)
   EXPECT_STREQ(string1.c_str(), simdstring1.c_str());
   EXPECT_EQ(string1.length(), simdstring1.length());
 
-  SIMDString<64> simdstring2;
+  SIMDString<char, 64> simdstring2;
   simdstring2.push_back('a');
   EXPECT_STREQ(simdstring2.c_str(), "a");
   EXPECT_EQ(simdstring2.length(), 1);
@@ -453,8 +453,8 @@ TEST(SIMDStringTest, Insert)
   std::string string1("0123456789");
   std::string string2("abcdefg");
 
-  SIMDString<64> simdstring1("0123456789");
-  SIMDString<64> simdstring2("abcdefg");
+  SIMDString<char, 64> simdstring1("0123456789");
+  SIMDString<char, 64> simdstring2("abcdefg");
 
   #define INSERT_TESTS(stdPos, simdPos)\
   EXPECT_STREQ(string1.insert(stdPos, string2).c_str(), simdstring1.insert(simdPos, simdstring2).c_str());\
@@ -508,11 +508,11 @@ TEST(SIMDStringTest, Replace)
   std::string string1("0123456789");
   std::string string2("abcdefg");
 
-  SIMDString<64> simdstring1("0123456789");
-  SIMDString<64> simdstring2("abcdefg");
+  SIMDString<char, 64> simdstring1("0123456789");
+  SIMDString<char, 64> simdstring2("abcdefg");
   
   std::string string3("abcdefg");
-  SIMDString<64> simdstring3("abcdefg");
+  SIMDString<char, 64> simdstring3("abcdefg");
 
   #define REPLACE_TESTS(stdPos, simdPos, count, count2)\
   EXPECT_STREQ(string1.replace(stdPos, count, string2).c_str(), simdstring1.replace(simdPos, count, simdstring2).c_str());\
@@ -601,7 +601,7 @@ TEST(SIMDStringTest, Replace)
 
 TEST(SIMDStringTest, ClearErase)
 {
-  SIMDString<64> simdstring1(sampleString);
+  SIMDString<char, 64> simdstring1(sampleString);
   std::string string1(sampleString);
 
   EXPECT_EQ(simdstring1.erase(6, 12).size(), string1.erase(6, 12).size());
@@ -625,14 +625,14 @@ TEST(SIMDStringTest, ClearErase)
   EXPECT_STREQ(simdstring1.c_str(), "");
   EXPECT_TRUE(simdstring1.empty());
 
-  SIMDString<64> simdstring2(sampleString);
+  SIMDString<char, 64> simdstring2(sampleString);
   simdstring2.clear();
   EXPECT_EQ(simdstring2.size(), 0);
   EXPECT_EQ(simdstring2.length(), 0);
   EXPECT_STREQ(simdstring2.c_str(), "");
   EXPECT_TRUE(simdstring2.empty());
 
-  SIMDString<64> simdstring3(sampleString);
+  SIMDString<char, 64> simdstring3(sampleString);
   std::string string3(sampleString);
   simdstring3.erase(10, 1);
   string3.erase(10, 1);
@@ -641,7 +641,7 @@ TEST(SIMDStringTest, ClearErase)
   EXPECT_FALSE(simdstring3.empty());
   
   std::string string4(100, 'a');
-  SIMDString<64> simdstring4(100, 'a');
+  SIMDString<char, 64> simdstring4(100, 'a');
   string4[75] = 'b';
   simdstring4[75] = 'b';
   EXPECT_EQ(simdstring4.size(), string4.size());
@@ -653,15 +653,15 @@ TEST(SIMDStringTest, Swap)
 {
   // buffer alloc
   std::string string1(20, 'a');
-  SIMDString<64> simdstring1(20, 'a');
+  SIMDString<char, 64> simdstring1(20, 'a');
 
   // const string
   std::string string2(sampleString);
-  SIMDString<64> simdstring2(sampleString);
+  SIMDString<char, 64> simdstring2(sampleString);
 
   // heap alloc
   std::string string3(100, 'b');
-  SIMDString<64> simdstring3(100, 'b');
+  SIMDString<char, 64> simdstring3(100, 'b');
 
   simdstring1.swap(simdstring2);
 
@@ -677,17 +677,17 @@ TEST(SIMDStringTest, Swap)
   EXPECT_STREQ(simdstring3.c_str(), string2.c_str());
   EXPECT_EQ(simdstring3.size(), string2.size());
 
-  SIMDString<64> simdstring4(SIMDString<64>(26, 'z'));
-  SIMDString<64> simdstring5(SIMDString<64>(sampleString));
-  SIMDString<64> simdstring6(SIMDString<64>(200, 'z'));
+  SIMDString<char, 64> simdstring4(SIMDString<char, 64>(26, 'z'));
+  SIMDString<char, 64> simdstring5(SIMDString<char, 64>(sampleString));
+  SIMDString<char, 64> simdstring6(SIMDString<char, 64>(200, 'z'));
 }
 
 TEST(SIMDStringTest, Find)
 {
   std::string string1(findTestString);
-  SIMDString<64> simdstring1(findTestString);
+  SIMDString<char, 64> simdstring1(findTestString);
   std::string substr("abc");
-  SIMDString<64> subsimdstr("abc"); 
+  SIMDString<char, 64> subsimdstr("abc"); 
 
   // find substring
   EXPECT_EQ(string1.find("abc"), simdstring1.find("abc"));
@@ -725,7 +725,7 @@ TEST(SIMDStringTest, Find)
 
   // buffer alloc
   std::string string2(20, 'a');
-  SIMDString<64> simdstring2(20, 'a');
+  SIMDString<char, 64> simdstring2(20, 'a');
   string2[15] = 'b';
   simdstring2[15] = 'b';
   string2.resize(11);
@@ -742,13 +742,13 @@ TEST(SIMDStringTest, Find)
   EXPECT_EQ(string2.find("", string2.size()), simdstring2.find("", simdstring2.size()));
 
   // test empty string
-  SIMDString<64> simdstring3; 
+  SIMDString<char, 64> simdstring3; 
   std::string string3; 
   EXPECT_EQ(string3.find('a'), simdstring3.find('a'));
   EXPECT_EQ(string3.find("abcd"), simdstring3.find("abcd"));
   
   // edge case null char
-  SIMDString<64> simdstring4("test");
+  SIMDString<char, 64> simdstring4("test");
   simdstring4 += '\0';
   simdstring4 += "null";
   std::string string4("test");
@@ -760,9 +760,9 @@ TEST(SIMDStringTest, Find)
 TEST(SIMDStringTest, RFind)
 {
   std::string string1(findTestString);
-  SIMDString<64> simdstring1(findTestString);
+  SIMDString<char, 64> simdstring1(findTestString);
   std::string substr("abc");
-  SIMDString<64> subsimdstr("abc"); 
+  SIMDString<char, 64> subsimdstr("abc"); 
 
   // find substring
   EXPECT_EQ(string1.rfind("abc"), simdstring1.rfind("abc"));
@@ -797,7 +797,7 @@ TEST(SIMDStringTest, RFind)
   EXPECT_EQ(string1.rfind(findTestString3), simdstring1.rfind(findTestString3));
 
   std::string string2(findTestString, 30); 
-  SIMDString<64> simdstring2(findTestString, 30);
+  SIMDString<char, 64> simdstring2(findTestString, 30);
   // test edge case where match is nearby but out of scope
   EXPECT_EQ(string2.rfind('d', 6), simdstring2.rfind('d', 6));
   EXPECT_EQ(string2.rfind("cd", 6), simdstring2.rfind("cd", 6));
@@ -810,13 +810,13 @@ TEST(SIMDStringTest, RFind)
   EXPECT_EQ(string2.rfind("", string2.size()), simdstring2.rfind("", simdstring2.size()));
 
   // test empty string
-  SIMDString<64> simdstring3; 
+  SIMDString<char, 64> simdstring3; 
   std::string string3; 
   EXPECT_EQ(string3.rfind('a'), simdstring3.rfind('a'));
   EXPECT_EQ(string3.rfind("abcd"), simdstring3.rfind("abcd"));
   
   // edge case null char
-  SIMDString<64> simdstring4("test");
+  SIMDString<char, 64> simdstring4("test");
   simdstring4 += '\0';
   simdstring4 += "null";
   std::string string4("test");
@@ -829,7 +829,7 @@ TEST(SIMDStringTest, FindFirstLastOf)
 {
   const char *findFirstLastOfTestString = "The quick brown fox jumps over the lazy dog. Sphinx of black quartz, judge my vow.";
   std::string string1(findFirstLastOfTestString);
-  SIMDString<64> simdstring1(findFirstLastOfTestString);
+  SIMDString<char, 64> simdstring1(findFirstLastOfTestString);
 
   // find first/last of
   EXPECT_EQ(string1.find_first_of('d'), simdstring1.find_first_of('d'));
@@ -876,7 +876,7 @@ TEST(SIMDStringTest, FindFirstLastOf)
 
   // buffer alloc
   std::string string2(20, 'a');
-  SIMDString<64> simdstring2(20, 'a');
+  SIMDString<char, 64> simdstring2(20, 'a');
   string2[15] = 'b';
   simdstring2[15] = 'b';
   string2.resize(11);
@@ -892,7 +892,7 @@ TEST(SIMDStringTest, FindFirstLastOf)
   EXPECT_EQ(string2.find_last_of('b', 6), simdstring2.find_last_of('b', 6));
   EXPECT_EQ(string2.find_last_of("bc", 6), simdstring2.find_last_of("bc", 6));
 
-  SIMDString<64> simdstring3; 
+  SIMDString<char, 64> simdstring3; 
   std::string string3; 
   // test empty string
   EXPECT_EQ(string3.find_first_of('d'), simdstring3.find_first_of('d'));
@@ -905,7 +905,7 @@ TEST(SIMDStringTest, FindFirstLastNotOf)
 {
   const char *findFirstLastNotOfTestString = "     a           b     m       c            d            e    t     f         ";
   std::string string1(findFirstLastNotOfTestString);
-  SIMDString<64> simdstring1(findFirstLastNotOfTestString);
+  SIMDString<char, 64> simdstring1(findFirstLastNotOfTestString);
 
   // find first/last not of (space in "abcdef " is deliberate) 
   EXPECT_EQ(string1.find_first_not_of(' '), simdstring1.find_first_not_of(' '));
@@ -952,7 +952,7 @@ TEST(SIMDStringTest, FindFirstLastNotOf)
 
   // buffer alloc
   std::string string2(20, 'a');
-  SIMDString<64> simdstring2(20, 'a');
+  SIMDString<char, 64> simdstring2(20, 'a');
   string2[2] = 'c';
   simdstring2[2] = 'c';
   string2[15] = 'b';
@@ -970,7 +970,7 @@ TEST(SIMDStringTest, FindFirstLastNotOf)
   EXPECT_EQ(string2.find_last_not_of('a', 6), simdstring2.find_last_not_of('a', 6));
   EXPECT_EQ(string2.find_last_not_of("ac", 6), simdstring2.find_last_not_of("ac", 6));
 
-  SIMDString<64> simdstring3; 
+  SIMDString<char, 64> simdstring3; 
   std::string string3; 
   // test empty string
   EXPECT_EQ(string3.find_first_not_of('d'), simdstring3.find_first_not_of('d'));
@@ -978,7 +978,7 @@ TEST(SIMDStringTest, FindFirstLastNotOf)
   EXPECT_EQ(string3.find_last_not_of('d'), simdstring3.find_last_not_of('d'));
   EXPECT_EQ(string3.find_last_not_of("mnop"), simdstring3.find_last_not_of("mnop"));
 
-  SIMDString<64> simdstring4("test");
+  SIMDString<char, 64> simdstring4("test");
   simdstring4 += '\0';
   simdstring4 += "null";
   
@@ -989,7 +989,7 @@ TEST(SIMDStringTest, FindFirstLastNotOf)
 
 TEST(SIMDStringTest, StartsEndsWith)
 {
-  SIMDString<64> simdstring1(sampleString);
+  SIMDString<char, 64> simdstring1(sampleString);
 
   EXPECT_TRUE(simdstring1.starts_with("the"));
   EXPECT_FALSE(simdstring1.starts_with("woah"));
@@ -1008,7 +1008,7 @@ TEST(SIMDStringTest, StartsEndsWith)
 
 TEST(SIMDStringTest, Contains)
 {
-  SIMDString<64> simdstring1(sampleString);
+  SIMDString<char, 64> simdstring1(sampleString);
 
   EXPECT_TRUE(simdstring1.contains("the"));
   EXPECT_FALSE(simdstring1.contains("woah"));
@@ -1019,13 +1019,13 @@ TEST(SIMDStringTest, CopySubstr)
 {
   const char* copySubstrTestString = "0123456789abcdefghijklmnopqrstuvwxyz";
   char tmp[11];
-  SIMDString<64> simdstring1(copySubstrTestString);
+  SIMDString<char, 64> simdstring1(copySubstrTestString);
   tmp[10] = '\0';
 
   // test copy and substr for first 10 chars
   EXPECT_EQ(10, simdstring1.copy(tmp, 10));
   EXPECT_STREQ(tmp, "0123456789");
-  SIMDString<64> substr = simdstring1.substr(0, 10);
+  SIMDString<char, 64> substr = simdstring1.substr(0, 10);
   EXPECT_EQ(strlen(tmp), substr.size());
   EXPECT_STREQ(tmp, substr.c_str());
 
@@ -1042,7 +1042,7 @@ TEST(SIMDStringTest, CopySubstr)
   EXPECT_STREQ(copySubstrTestString + 10, substr.c_str());
 
   // Test substr with null chars
-  SIMDString<64> simdstring2("test");
+  SIMDString<char, 64> simdstring2("test");
   simdstring2 += '\0';
   simdstring2 += "null";
   simdstring2 += '\0';
@@ -1062,7 +1062,7 @@ TEST(SIMDStringTest, CopySubstr)
 
 TEST(SIMDStringTest, SizeClear)
 {
-  SIMDString<64> simdstring1(sampleString);
+  SIMDString<char, 64> simdstring1(sampleString);
   std::string string1(sampleString);
 
   // resize bigger, don't set  
@@ -1102,7 +1102,7 @@ TEST(SIMDStringTest, SizeClear)
 
 TEST(SIMDStringTest, Conversions)
 {
-  SIMDString<64> simdstring1 = to_string(1234567890);
+  SIMDString<char, 64> simdstring1 = to_string(1234567890);
   std::string string1 = std::to_string(1234567890);
   EXPECT_STREQ(simdstring1.c_str(), string1.c_str());
   EXPECT_EQ(simdstring1.size(), string1.size());
@@ -1208,7 +1208,7 @@ TEST(SIMDStringTest, Conversions)
   EXPECT_STREQ(simdstring1.c_str(), string1.c_str());
   EXPECT_EQ(simdstring1.size(), string1.size());
 
-  SIMDString<64> simdstring2("-1234567890");
+  SIMDString<char, 64> simdstring2("-1234567890");
   std::string string2("-1234567890");
 
   EXPECT_EQ(stoi(simdstring2), std::stoi(string2));
@@ -1231,7 +1231,7 @@ TEST(SIMDStringTest, Conversions)
   EXPECT_EQ(stoull(simdstring2, &posSimdstring), std::stoll(string2, &posString));
   EXPECT_EQ(posSimdstring, posString);
 
-  SIMDString<64> simdstring3("-1.52343249");
+  SIMDString<char, 64> simdstring3("-1.52343249");
   std::string string3("-1.52343249");
 
   EXPECT_EQ(stof(simdstring3), std::stof(string3));
@@ -1258,7 +1258,7 @@ TEST(SIMDStringTest, IO){
   std::istringstream iss7(tmp);
   std::istringstream iss8(tmp);
 
-  SIMDString<64> simdstring1;
+  SIMDString<char, 64> simdstring1;
   std::string string1;
 
   // test operator>>
@@ -1291,7 +1291,7 @@ TEST(SIMDStringTest, IO){
   std::ostringstream oss2;
   std::ostringstream oss1;
 
-  SIMDString<64> simdstring2(sampleString);
+  SIMDString<char, 64> simdstring2(sampleString);
   std::string string2(sampleString);
 
   oss1 << std::setw(50) << simdstring2 << std::setfill('*') << std::setw(50) << simdstring2 << std::endl; 
@@ -1303,7 +1303,7 @@ TEST(SIMDStringTest, IO){
 TEST(SIMDStringTest, Reserve){
   size_t largeSize = 1 << 21; 
   // test that reserve allocates exactly how much is expected + 1
-  SIMDString<64> simdstring1;
+  SIMDString<char, 64> simdstring1;
   simdstring1.reserve(largeSize);
   EXPECT_LE(largeSize, simdstring1.capacity());
 
@@ -1314,41 +1314,41 @@ TEST(SIMDStringTest, Reserve){
   EXPECT_LE(largeSize, simdstring1.capacity());
 
   // call to reserve doesn't change expected size
-  simdstring1 = SIMDString<64>(100, 'a');
+  simdstring1 = SIMDString<char, 64>(100, 'a');
   simdstring1.reserve();
   EXPECT_LE(100, simdstring1.capacity());
 
   // in buffer, call to reserve with no params, should preserve buffer size
-  simdstring1 = SIMDString<64>(10, 'a');
+  simdstring1 = SIMDString<char, 64>(10, 'a');
   simdstring1.reserve();
   EXPECT_EQ(64, simdstring1.capacity());
   EXPECT_STREQ("aaaaaaaaaa", simdstring1.c_str());
 
   // in buffer, call to reserve with larger size, data should move to heap
-  simdstring1 = SIMDString<64>(10, 'a');
+  simdstring1 = SIMDString<char, 64>(10, 'a');
   simdstring1.reserve(largeSize);
   EXPECT_LE(largeSize, simdstring1.capacity());
   EXPECT_STREQ("aaaaaaaaaa", simdstring1.c_str());
 
   // when inConst, capacity is exactly as big as the const string
-  simdstring1 = SIMDString<64>(sampleString);
+  simdstring1 = SIMDString<char, 64>(sampleString);
   EXPECT_EQ(sampleStringSize, simdstring1.capacity());
   simdstring1.reserve();
   EXPECT_EQ(sampleStringSize, simdstring1.capacity());
   
   // test that reserve allocates expected amount AND that const string is copied over
-  simdstring1 = SIMDString<64>(sampleString);
+  simdstring1 = SIMDString<char, 64>(sampleString);
   simdstring1.reserve(largeSize);
   EXPECT_LE(largeSize, simdstring1.capacity());
   EXPECT_STREQ(sampleString, simdstring1.c_str());
 }
 
 TEST(SIMDStringTest, Hash){
-  SIMDString<64> simdstring1(sampleString);
+  SIMDString<char, 64> simdstring1(sampleString);
   std::string string1(sampleString);
 
   // only works if G3D Alloc is disabled bc had to hard code in types for hash
-  size_t simdHash = std::hash<SIMDString<64>>{}(simdstring1);
+  size_t simdHash = std::hash<SIMDString<char, 64>>{}(simdstring1);
   size_t stringHash = std::hash<std::string>{}(string1);
 
   EXPECT_EQ(simdHash, stringHash);
@@ -1357,7 +1357,7 @@ TEST(SIMDStringTest, Hash){
 TEST(SIMDStringTest, RangeLoops){
   std::string result1, result2;
 
-  SIMDString<64> simdstring1(sampleString);
+  SIMDString<char, 64> simdstring1(sampleString);
   std::string string1(sampleString);
 
   for (char c : simdstring1){
